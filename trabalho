@@ -1,0 +1,120 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <math.h>
+#define CLEAR  "cls"
+
+typedef struct{
+    float x,y;
+    char form;
+}complexo;
+
+complexo ConvComplexo(char formsai, complexo *z1, complexo *z){
+    float x,y;
+    if((z1->form == 'c' || z1->form == 'C') && (formsai == 'C' || formsai == 'c')){
+        printf("O numero informado ja esta no formato desejado nao necessita de conversao\n");
+    }
+    else if ((z1->form == 'e' || z1->form == 'E') && (formsai == 'e' || formsai == 'E')){
+        printf("O numero informado ja esta no formato desejado nao necessita de conversao\n");
+    }
+    else if ((z1->form == 'e' || z1->form == 'E') && (formsai == 'c' || formsai == 'C'))
+    {
+        z->x=z1->x * cos(z1->y);
+        z->y=z1->x * sin(z1->y);
+        z->form = 'C';
+    }
+    else if ((z1->form == 'c' || z1->form == 'C') && (formsai == 'e' || formsai == 'E'))
+    {
+        z->x=sqrt(pow(z1->x,2)+pow(z1->y,2));
+        z->y=atan(y/x);
+        z->form = 'E';
+    }
+}
+
+
+
+void Operacao(complexo *z1, complexo *z2,complexo *z, int formsai){
+    char op;
+    printf("digite sua Operacao desejada:\n");
+    getchar();
+    scanf("%c", &op);
+    getchar();
+    if (op == 'A'){
+        if (z1->form == 'E' || z1->form == 'e'){
+            ConvComplexo(formsai, z1, z);
+        }
+        if (z2->form == 'E' || z2->form == 'e'){
+            ConvComplexo(formsai, z2, z);
+        }
+        z->x=(z1->x + z2->x) + (z1->y + z2->y);
+        printf("%fi\n", z->x);
+    }
+    if (op == 'S'){
+         if (z1->form == 'E' || z1->form == 'e'){
+            ConvComplexo(formsai, z1, z);
+        }
+         if (z2->form == 'E' || z2->form == 'e'){
+            ConvComplexo(formsai, z2, z);
+        }
+        z->x=(z1->x - z2->x) - (z1->y - z2->y);
+        printf("%fi\n", z->x);
+    }
+    if(op == 'M'){
+         if (z1->form == 'C' || z1->form == 'c'){
+            ConvComplexo(formsai, z1, z);
+        }
+        if (z2->form == 'C' || z2->form == 'c'){
+            ConvComplexo(formsai, z2, z);
+        }
+        z->x=fabs(z1->x * z2->x)*(cos(z1->y+z2->y));
+        z->y=fabs(z1->x * z2->x)*(sin(z1->y+z2->y));
+        printf("%f x %f^e\n", z->x, z->y);
+    } 
+    if (op == 'D'){
+         if (z1->form == 'C' || z1->form == 'c'){
+            ConvComplexo(formsai, z1, z);
+        }
+        if (z2->form == 'C' || z2->form == 'c'){
+            ConvComplexo(formsai, z2, z);
+        }
+        z->x=fabs(z1->x/ z2->x)*(cos(z1->y-z2->y));
+        z->y=fabs(z1->x/ z2->x)*(sin(z1->y-z2->y));
+        printf("%f x %f^e\n", z->x, z->y);
+    }
+}
+
+int main(){
+    complexo *z,*z1,*z2;
+    char formsai;
+    int t;
+    float manin, manin2,manin3;
+    printf("Digite como vai ser seu complexo(1 para cartesiano ou 2 para exponencial): \n");
+    scanf("%f", &manin);
+    printf("Se deseja fazer uma operacao digite 1.\n");
+    printf("Se deseja fazer uma conversao digite 2.\n");
+    scanf("%d", &t);
+    if ( t==1 ){
+        Operacao(z1,z2,z,formsai);
+    }
+    if ( t==2 ){
+        if (z->form == 'C' || z->form == 'c'){
+            printf("Digite quais numeros queira converter: \n");
+            scanf("%f %f", manin2, manin3);
+            printf("Digite como queira a saida(C ou E): \n");
+            scanf("%c", &formsai);
+            getchar();
+            ConvComplexo(formsai, z1,z);
+        }
+        if (z->form == 'E' || z->form == 'e'){
+            printf("Digite o numero que queira converter: \n");
+            scanf("%f %f", manin2, manin3);
+            z->x=manin2;
+            z->y=manin3;
+            printf("Digite como queira a saida(C ou E): \n");
+            getchar();
+            scanf("%c", &formsai);
+            getchar();
+            ConvComplexo(formsai, z1,z);
+        }
+    }
+    return 0;
+}
